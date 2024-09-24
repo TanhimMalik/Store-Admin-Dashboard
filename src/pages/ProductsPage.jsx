@@ -28,8 +28,15 @@ const ProductsPage = () => {
 				</motion.div>
 
 				<ProductsTable />
+
+				{/* CHARTS */}
+				<div className='grid grid-col-1 lg:grid-cols-2 gap-8' style={{marginTop:'5rem'}}>
+					<SalesTrendChart />
+					<CategoryDistributionChart />
+				</div>
 			</main>
 		</div>
 	);
 };
 export default ProductsPage;
+
