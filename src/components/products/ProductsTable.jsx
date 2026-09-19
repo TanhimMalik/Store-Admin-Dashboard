@@ -9,6 +9,7 @@ import {
   uploadImage,
 } from "../../firebase/firebaseCrud";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useAuth } from "../../context/AuthContext";
 
 // Modal component for Add/Edit
 const Modal = ({ isOpen, onClose, onSave, initialData }) => {
@@ -242,6 +243,7 @@ const PreviewModal = ({ product, onClose }) => {
 };
 
 const ProductsTable = () => {
+  const { user } = useAuth();
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -346,15 +348,21 @@ const ProductsTable = () => {
           />
           <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
         </div>
-        <button
-          onClick={() => {
-            setIsModalOpen(true);
-            setEditData(null);
-          }}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Add New Product
-        </button>
+        {user ? (
+          <button
+            onClick={() => {
+              setIsModalOpen(true);
+              setEditData(null);
+            }}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Add New Product
+          </button>
+        ) : (
+          <p className="text-sm text-gray-400 italic">
+            Sign in to manage products
+          </p>
+        )}
       </div>
 
       {/* Show loader during product fetching */}
@@ -427,18 +435,22 @@ const ProductsTable = () => {
                   >
                     <Eye size={18} />
                   </button>
-                  <button
-                    onClick={() => handleEditProduct(product)}
-                    className="text-indigo-400 hover:text-indigo-300 mr-2"
-                  >
-                    <Edit size={18} />
-                  </button>
-                  <button
-                    onClick={() => setDeleteId(product.id)}
-                    className="text-red-400 hover:text-red-300"
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                  {user && (
+                    <>
+                      <button
+                        onClick={() => handleEditProduct(product)}
+                        className="text-indigo-400 hover:text-indigo-300 mr-2"
+                      >
+                        <Edit size={18} />
+                      </button>
+                      <button
+                        onClick={() => setDeleteId(product.id)}
+                        className="text-red-400 hover:text-red-300"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </>
+                  )}
                 </td>
               </motion.tr>
             ))}

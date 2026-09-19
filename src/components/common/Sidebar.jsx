@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import AuthControl from "./AuthControl";
 
 const SIDEBAR_ITEMS = [
   {
@@ -71,6 +72,8 @@ const Sidebar = () => {
             </Link>
           ))}
         </nav>
+
+        <AuthControl isSidebarOpen={isSidebarOpen} />
       </div>
     </motion.div>
   );
